@@ -3,9 +3,7 @@ import { useState } from "react";
 import styles from "./index.module.css";
 import { useEffect } from "react";
 import LoadingIcon from "./loadingicon";
-import prefix from 'react-prefixer';
-
-
+import prefix from "react-prefixer";
 
 export default function Home() {
   const [questionInput, setQuestionInput] = useState("");
@@ -13,7 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
-          setLoading(true);
+    setLoading(true);
     event.preventDefault();
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -26,7 +24,6 @@ export default function Home() {
     setResult(data.result);
     setQuestionInput("");
     setLoading(false);
-
   }
   function onKeyDown(event) {
     if (event.key === "Enter") {
@@ -43,41 +40,46 @@ export default function Home() {
 
       <main className={styles.main}>
         <img src="/imam.png" className={styles.icon} />
-        <h3>Ask ImamAI</h3>
-        <p style = {{
-          fontSize : "11px",
-          paddingBottom: "40px",
-        }}>Created by Usama</p>
+        <h3>Paste your lecture</h3>
+        <p
+          style={{
+            fontSize: "11px",
+            paddingBottom: "40px",
+          }}
+        >
+          Created by Usama
+        </p>
         {/* <p style={{
             paddingBottom: "30px",
             fontSize : "12px",
           }
             }>&lt;this was made in just few hours, so its not perfect&gt;</p> */}
 
-
         <form onSubmit={onSubmit}>
-          <input 
-          
+          <input
             // make the form input a rounded rectangle
-            style = {{
+            style={{
               // add the webkit appearance to none and make it !important to override the default styling
-              WebkitAppearance: 'none',
+              WebkitAppearance: "none",
               border: "1px solid transparent",
               //set the borderColor to a gradient
-              boxShadow:" 20px 4px 40px #F45DF9AC, 0px 4px 40px #0099FFA3, -20px 4px 40px #2ACFDBA5",
+              boxShadow:
+                " 20px 4px 40px #F45DF9AC, 0px 4px 40px #0099FFA3, -20px 4px 40px #2ACFDBA5",
               borderRadius: "500px",
-              marginTop : "1px",
+              marginTop: "1px",
               // WebkitBoxShadow: "20px 5px 40px #CF77F3, 0px 5px 40px #009BFF, -20px 5px 40px #2AC9DB !important",
             }}
             type="text"
             name="animal"
             placeholder="   Ask then press enter "
             value={questionInput}
-                    onChange={(e) => setQuestionInput(e.target.value)}
+            onChange={(e) => setQuestionInput(e.target.value)}
             onKeyDown={onKeyDown}
           />
         </form>
-        <div className={styles.result}>{loading ? <LoadingIcon /> : result}</div>
+        <div className={styles.result}>
+          {loading ? <LoadingIcon /> : result}
+        </div>
       </main>
     </div>
   );
