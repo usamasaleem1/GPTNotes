@@ -6,14 +6,26 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-  const completion = await openai.createCompletion("text-davinci-003", {
-    prompt: generatePrompt(req.body.animal),
-    temperature: 0.3,
-    max_tokens: 700,
+  const messages = [
+    {
+      role: "system",
+      content: "You are a helpful assistant.",
+    },
+    {
+      role: "user",
+      content: generatePrompt(req.body.animal),
+    },
+  ];
+
+  const completion = await openai.ChatCompletion.create({
+    model: "gpt-3.5-turbo",
+    messages: messages,
   });
-  res
-    .status(200)
-    .json({ result: completion.data.choices[0].text, loading: false });
+
+  res.status(200).json({
+    result: completion.data.choices[0].message.content,
+    loading: false,
+  });
 }
 
 function generatePrompt(animal) {
