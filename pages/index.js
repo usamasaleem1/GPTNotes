@@ -40,7 +40,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <img src="/imam.png" className={styles.icon} />
-        <h3>Paste your lecture</h3>
+        <h3>Generate Lecture Notes</h3>
         <p
           style={{
             fontSize: "11px",
@@ -71,7 +71,7 @@ export default function Home() {
             }}
             type="text"
             name="animal"
-            placeholder="   Ask then press enter "
+            placeholder="   Copy paste lecture, enter, and get notes "
             value={questionInput}
             onChange={(e) => setQuestionInput(e.target.value)}
             onKeyDown={onKeyDown}
