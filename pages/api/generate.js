@@ -1,24 +1,25 @@
-import openai from "openai";
+import { Configuration, OpenAIApi } from "openai";
 
-async function generatePrompt(animal) {
-  const question = animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `I am a highly intelligent bot that can generate lecture notes for you. Given the lecture slides, I will create lecture notes for you.\n\nQ: ${question}\nA: `;
-}
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-  const response = await openai.ChatCompletion.create({
-    engine: "gpt-3.5-turbo",
+  const completion = await openai.createCompletion("text-davinci-003", {
     prompt: generatePrompt(req.body.animal),
-    max_tokens: 700,
     temperature: 0.3,
-    messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "What are the main points of the lecture?" },
-    ],
+    max_tokens: 700,
   });
+  res
+    .status(200)
+    .json({ result: completion.data.choices[0].text, loading: false });
+}
 
-  res.status(200).json({
-    result: response.choices[0].text,
-    loading: false,
-  });
+function generatePrompt(animal) {
+  const question = animal[0].toUpperCase() + animal.slice(1).toLowerCase();
+  return `I am a highly intelligent bot that can generate lecture notes for you. Given the lecture slides, I will create lecture notes for you.
+
+Q: ${question}
+A: `;
 }
